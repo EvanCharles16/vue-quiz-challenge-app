@@ -8,7 +8,9 @@
     <hr />
     <div class="row">
       <div class="col-xs-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
-        <component :is="mode" @answered="answered($event)" @confirmed="mode = 'app-question'"></component>
+        <transition name="flip" mode="out-in">
+          <component :is="mode" @answered="answered($event)" @confirmed="mode = 'app-question'"></component>
+        </transition>
       </div>
     </div>
   </div>
@@ -40,3 +42,43 @@ export default {
   },
 };
 </script>
+
+<style>
+.flip-enter {
+  /* We dont need it because the default already at 0deg */
+  transform: rotateY(0deg);
+}
+
+.flip-enter-active {
+  animation: flip-in 0.5s ease-out forwards;
+}
+
+.flip-leave {
+  /* We dont need it because the default already at 0deg */
+  transform: rotateY(0deg);
+}
+
+.flip-leave-active {
+  animation: flip-out 0.5s ease-out forwards;
+}
+
+@keyframes flip-out {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(90deg);
+    /* we need to rotate 90deg, cant 180deg , if 180deg , we will see blank canvas */
+  }
+}
+
+@keyframes flip-in {
+  from {
+    transform: rotateY(90deg);
+  }
+
+  to {
+    transform: rotateY(0deg);
+  }
+}
+</style>
